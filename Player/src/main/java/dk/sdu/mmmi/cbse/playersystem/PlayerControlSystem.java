@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
+import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -15,6 +16,8 @@ import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
+    boolean isBulletCreatedRecently = false;
+    long delayTime = System.currentTimeMillis();
     @Override
     public void process(GameData gameData, World world) {
             
@@ -30,6 +33,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 double changeY = Math.sin(Math.toRadians(player.getRotation()));
                 player.setX(player.getX() + changeX);
                 player.setY(player.getY() + changeY);
+            }
+            if (gameData.getKeys().isDown(GameKeys.SPACE) && ready(System.currentTimeMillis())) {
+                // Create new Bullet and add it to world - Er dog ikke sikker på hvorfor der allerede er bullet i getBulletSPIs()
+                for(BulletSPI bullet : getBulletSPIs()) {
+                   world.addEntity(bullet.createBullet(player, gameData));
+                   delayTime = System.currentTimeMillis() + 500;
+                }
             }
             
         if (player.getX() < 0) {
@@ -47,8 +57,16 @@ public class PlayerControlSystem implements IEntityProcessingService {
         if (player.getY() > gameData.getDisplayHeight()) {
             player.setY(gameData.getDisplayHeight()-1);
         }
-            
                                         
+        }
+    }
+
+    //Yet to work....
+    private boolean ready(long createdBulletTime) {
+        if(System.currentTimeMillis() >= delayTime) {
+            return true;
+        } else {
+            return false;
         }
     }
 
