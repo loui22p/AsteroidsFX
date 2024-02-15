@@ -60,7 +60,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
-    //Yet to work....
+    //Add delay to bullet firing
     private boolean ready(long currentTriggerTime, Player player) {
 
         long readyTime = player.getBulletFiredTime() + 200;
