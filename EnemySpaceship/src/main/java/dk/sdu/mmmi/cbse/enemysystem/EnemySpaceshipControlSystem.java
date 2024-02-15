@@ -23,6 +23,7 @@ public class EnemySpaceshipControlSystem implements IEntityProcessingService {
             double changeY = Math.sin(Math.toRadians(enemySpaceship.getRotation()));
             enemySpaceship.setX(enemySpaceship.getX() + changeX);
             enemySpaceship.setY(enemySpaceship.getY() + changeY);
+
         }
     }
 

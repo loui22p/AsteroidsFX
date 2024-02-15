@@ -21,11 +21,13 @@ public class EnemySpaceshipPlugin implements IGamePluginService {
 
     private Entity createEnemySpaceship(GameData gameData) {
 
-        Entity playerShip = new EnemySpaceship();
-        playerShip.setPolygonCoordinates(-7,-7,7,7,-7,7);
-        playerShip.setX(gameData.getDisplayHeight()/Math.random());
-        playerShip.setY(gameData.getDisplayWidth()/Math.random());
-        return playerShip;
+        Entity enemyShip = new EnemySpaceship();
+        enemyShip.setPolygonCoordinates(-10,-10,0,5,-10,10);
+        enemyShip.setX(gameData.getDisplayHeight() / 2);
+        enemyShip.setY(gameData.getDisplayWidth() / 2);
+        enemyShip.setRotation(0.1 + Math.random()*359.9);   // Rotate between 0.1 and 360 degrees
+
+        return enemyShip;
     }
 
     @Override
