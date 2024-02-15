@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
+import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -7,7 +8,9 @@ import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 
+import java.security.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +34,12 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 player.setX(player.getX() + changeX);
                 player.setY(player.getY() + changeY);
             }
+            if (gameData.getKeys().isDown(GameKeys.SPACE) && ready(System.currentTimeMillis(), (Player) player)) {
+                // Create new Bullet and add it to world - Er dog ikke sikker på hvorfor der allerede er bullet i getBulletSPIs()
+                for(BulletSPI bullet : getBulletSPIs()) {
+                   world.addEntity(bullet.createBullet(player, gameData));
+                }
+            }
             
         if (player.getX() < 0) {
             player.setX(1);
@@ -47,8 +56,22 @@ public class PlayerControlSystem implements IEntityProcessingService {
         if (player.getY() > gameData.getDisplayHeight()) {
             player.setY(gameData.getDisplayHeight()-1);
         }
-            
                                         
+        }
+    }
+
+    //Add delay to bullet firing
+    private boolean ready(long currentTriggerTime, Player player) {
+
+        long readyTime = player.getBulletFiredTime() + 200;
+        if(player.getBulletFiredTime() == 0) {
+            player.setBulletFiredTime(currentTriggerTime);
+            return true;
+        } else if (currentTriggerTime >= readyTime) {
+            player.setBulletFiredTime(currentTriggerTime);
+            return true;
+        } else {
+            return false;
         }
     }
 
