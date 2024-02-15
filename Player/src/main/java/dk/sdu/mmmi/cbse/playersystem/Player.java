@@ -8,4 +8,13 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
  */
 public class Player extends Entity {
 
+    private long bulletFiredTime;
+
+    public long getBulletFiredTime() {
+        return bulletFiredTime;
+    }
+
+    public void setBulletFiredTime(long bulletFiredTime) {
+        this.bulletFiredTime = bulletFiredTime;
+    }
 }

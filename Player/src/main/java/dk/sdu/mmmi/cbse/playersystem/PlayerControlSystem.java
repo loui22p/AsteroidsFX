@@ -8,7 +8,9 @@ import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 
+import java.security.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
@@ -16,8 +18,6 @@ import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
-    boolean isBulletCreatedRecently = false;
-    long delayTime = System.currentTimeMillis();
     @Override
     public void process(GameData gameData, World world) {
             
@@ -34,11 +34,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 player.setX(player.getX() + changeX);
                 player.setY(player.getY() + changeY);
             }
-            if (gameData.getKeys().isDown(GameKeys.SPACE) && ready(System.currentTimeMillis())) {
+            if (gameData.getKeys().isDown(GameKeys.SPACE) && ready(System.currentTimeMillis(), (Player) player)) {
                 // Create new Bullet and add it to world - Er dog ikke sikker på hvorfor der allerede er bullet i getBulletSPIs()
                 for(BulletSPI bullet : getBulletSPIs()) {
                    world.addEntity(bullet.createBullet(player, gameData));
-                   delayTime = System.currentTimeMillis() + 500;
                 }
             }
             
@@ -61,9 +60,15 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
-    //Yet to work....
-    private boolean ready(long createdBulletTime) {
-        if(System.currentTimeMillis() >= delayTime) {
+    //Add delay to bullet firing
+    private boolean ready(long currentTriggerTime, Player player) {
+
+        long readyTime = player.getBulletFiredTime() + 200;
+        if(player.getBulletFiredTime() == 0) {
+            player.setBulletFiredTime(currentTriggerTime);
+            return true;
+        } else if (currentTriggerTime >= readyTime) {
+            player.setBulletFiredTime(currentTriggerTime);
             return true;
         } else {
             return false;
