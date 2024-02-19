@@ -51,6 +51,14 @@ public class Entity implements Serializable {
     public double getRotation() {
         return rotation;
     }
+
+    public boolean outOfBounds(int screenx, int screeny) {
+        if (x < 0 || x > screenx || y < 0 || y > screeny) {
+            return true;
+        } else {
+            return false;
+        }
+    }
         
 
 }

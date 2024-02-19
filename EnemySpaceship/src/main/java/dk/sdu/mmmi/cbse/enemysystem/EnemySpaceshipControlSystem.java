@@ -24,7 +24,17 @@ public class EnemySpaceshipControlSystem implements IEntityProcessingService {
             enemySpaceship.setX(enemySpaceship.getX() + changeX);
             enemySpaceship.setY(enemySpaceship.getY() + changeY);
 
+//            if() {
+//                for(BulletSPI bullet : getBulletSPIs()) {
+//                    world.addEntity(bullet.createBullet(enemySpaceship, gameData));
+//                }
+//            }
+
         }
+    }
+
+    public void fireBullet(Entity enemySpaceship) {
+
     }
 
     private Collection<? extends BulletSPI> getBulletSPIs() {

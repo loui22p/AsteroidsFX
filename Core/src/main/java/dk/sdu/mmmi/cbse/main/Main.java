@@ -127,6 +127,15 @@ public class Main extends Application {
             }
         }
 
+        // Check if entities are out of Bounds and delete them
+        for (Entity entity : world.getEntities()) {
+            if(entity.outOfBounds(gameData.getDisplayHeight(), gameData.getDisplayWidth())) {
+                gameWindow.getChildren().remove(polygons.get(entity));      //remove drawing of polygon from game pane
+                polygons.remove(entity);                                    //remove polygon from polygons
+                world.removeEntity(entity);                                 //remove entity from world
+            }
+        }
+
 //        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
 //            postEntityProcessorService.process(gameData, world);
 //        }
