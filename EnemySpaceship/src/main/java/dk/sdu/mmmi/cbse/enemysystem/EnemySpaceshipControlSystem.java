@@ -3,7 +3,6 @@ package dk.sdu.mmmi.cbse.enemysystem;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 
@@ -26,10 +25,11 @@ public class EnemySpaceshipControlSystem implements IEntityProcessingService {
 
             if(fireBullet(System.currentTimeMillis(), (EnemySpaceship) enemySpaceship)) {
                 for(BulletSPI bullet : getBulletSPIs()) {
-                    world.addEntity(bullet.createBullet(enemySpaceship, gameData));
+                    Entity bulletEntity = bullet.createBullet(enemySpaceship, gameData);
+                    bulletEntity.setRotation(0.1 + Math.random()*359.9);
+                    world.addEntity(bulletEntity);
                 }
             }
-
         }
     }
 
