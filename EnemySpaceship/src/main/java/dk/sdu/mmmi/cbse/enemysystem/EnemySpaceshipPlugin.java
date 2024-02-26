@@ -4,6 +4,9 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+
+import java.util.Random;
+
 public class EnemySpaceshipPlugin implements IGamePluginService {
 
     private Entity EnemySpaceship;
@@ -21,11 +24,41 @@ public class EnemySpaceshipPlugin implements IGamePluginService {
 
     private Entity createEnemySpaceship(GameData gameData) {
 
-        Entity playerShip = new EnemySpaceship();
-        playerShip.setPolygonCoordinates(-7,-7,7,7,-7,7);
-        playerShip.setX(gameData.getDisplayHeight()/Math.random());
-        playerShip.setY(gameData.getDisplayWidth()/Math.random());
-        return playerShip;
+        Entity enemyShip = new EnemySpaceship();
+        enemyShip.setPolygonCoordinates(-10,-10,0,5,-10,10);
+        setStartPoint(gameData, enemyShip);
+//        enemyShip.setRotation(0.1 + Math.random()*359.9);   // Rotate between 0.1 and 360 degrees
+
+        return enemyShip;
+    }
+
+    private Entity setStartPoint (GameData gamedata, Entity enemySpaceship) {
+        int randomizer = (int) (Math.random() * (4-1) + 1);
+        Random random = new Random();
+        switch(randomizer) {
+            case 1:
+                enemySpaceship.setX(Math.random() * gamedata.getDisplayWidth());
+                enemySpaceship.setY(0);                                             //set enemy at top
+                enemySpaceship.setRotation(Math.random() * (180) + 0.1); //set rotation between 0 and 180
+                break;
+            case 2:
+                enemySpaceship.setX(Math.random() * gamedata.getDisplayWidth());
+                enemySpaceship.setY(gamedata.getDisplayHeight());                   //set enemy at bottom
+                enemySpaceship.setRotation(Math.random() * (-180) - 0.1);    //set rotation between 0 and -180
+                break;
+            case 3:
+                enemySpaceship.setX(0);                                             //set enemy to the left
+                enemySpaceship.setY(Math.random() * gamedata.getDisplayHeight());
+                enemySpaceship.setRotation(random.nextDouble(90 + 90) - 90);  //set rotation between -90 and 90
+                break;
+            case 4:
+                enemySpaceship.setX(gamedata.getDisplayWidth());                    //set enemy to the right
+                enemySpaceship.setY(Math.random() * gamedata.getDisplayHeight());
+                enemySpaceship.setRotation(random.nextDouble(90 + 90) + 90);    //set rotation between 90 and -90
+                break;
+        }
+
+        return enemySpaceship;
     }
 
     @Override
