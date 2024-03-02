@@ -17,11 +17,27 @@ public class AsteroidControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
             
-        for (Entity astroid : world.getEntities(Asteroid.class)) {
-            double changeX = Math.cos(Math.toRadians(astroid.getRotation()));
-            double changeY = Math.sin(Math.toRadians(astroid.getRotation()));
-            astroid.setX(astroid.getX() + changeX);
-            astroid.setY(astroid.getY() + changeY);
+        for (Entity asteroid : world.getEntities(Asteroid.class)) {
+            double changeX = Math.cos(Math.toRadians(asteroid.getRotation()));
+            double changeY = Math.sin(Math.toRadians(asteroid.getRotation()));
+            asteroid.setX(asteroid.getX() + changeX);
+            asteroid.setY(asteroid.getY() + changeY);
+
+            if (asteroid.getX() < 0) {
+                asteroid.setX(gameData.getDisplayWidth());
+            }
+
+            if (asteroid.getX() > gameData.getDisplayWidth()) {
+                asteroid.setX(0);
+            }
+
+            if (asteroid.getY() < 0) {
+                asteroid.setY(gameData.getDisplayHeight());
+            }
+
+            if (asteroid.getY() > gameData.getDisplayHeight()) {
+                asteroid.setY(0);
+            }
         }
     }
 

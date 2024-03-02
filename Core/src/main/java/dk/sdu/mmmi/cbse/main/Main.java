@@ -150,6 +150,10 @@ public class Main extends Application {
         }
     }
 
+    private void checkCollision () {
+
+    }
+
     private Collection<? extends IGamePluginService> getPluginServices() {
         return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
