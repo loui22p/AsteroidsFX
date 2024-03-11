@@ -13,4 +13,9 @@ public class EnemySpaceship extends Entity {
     public void setBulletFiredTime(long bulletFiredTime) {
         this.bulletFiredTime = bulletFiredTime;
     }
+
+    @Override
+    public void handleCollision(Entity collidingEntity) {
+        System.out.println("BANG ENEMY");
+    }
 }

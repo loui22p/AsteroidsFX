@@ -17,9 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.stream.Collectors.toList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -136,9 +138,10 @@ public class Main extends Application {
             }
         }
 
-//        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
-//            postEntityProcessorService.process(gameData, world);
-//        }
+        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
+            postEntityProcessorService.process(gameData, world);
+        }
+
     }
 
     private void draw() {
@@ -150,9 +153,38 @@ public class Main extends Application {
         }
     }
 
-    private void checkCollision () {
+//    private void checkCollision () {
+//        for (Entity entity : world.getEntities()) {
+//            for (Entity collideEntity : world.getEntities()) {
+//                if(entity == collideEntity) {
+//                    continue;
+//                }
+//
+//                // check if collision-boxes overlap
+//                double startEntity = entity.getX() + entity.getWidth() / 2;
+//                double startCollideEntity = collideEntity.getX() + collideEntity.getWidth() / 2;
+//                double endEntity = entity.getY() + entity.getHeight() / 2;
+//                double endCollideEntity = collideEntity.getY() + collideEntity.getHeight() / 2;
+//                Line line = new Line(startEntity, endEntity, startCollideEntity, endCollideEntity);
+//                gameWindow.getChildren().add(line);
+//
+//                // Calculate the distance between the centers of the entities' square hit-boxes
+//                double distanceX = Math.abs((startEntity) - (startCollideEntity));
+//                double distanceY = Math.abs((endEntity) - (endCollideEntity));
+//
+//                // Calculate the minimum distance between the centers at which a collision can occur
+//                double minDistanceX = entity.getWidth() / 2 + collideEntity.getWidth() / 2;
+//                double minDistanceY = entity.getHeight() / 2 + collideEntity.getHeight() / 2;
+//
+//                if (distanceX < minDistanceX && distanceY < minDistanceY) {
+//                    //handle the collision in entities through IPostEntityService
+//
+//                }
+//            }
+//        }
+//    }
 
-    }
+
 
     private Collection<? extends IGamePluginService> getPluginServices() {
         return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());

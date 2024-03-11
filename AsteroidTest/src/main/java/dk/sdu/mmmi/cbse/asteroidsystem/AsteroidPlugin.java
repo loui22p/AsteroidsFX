@@ -18,17 +18,19 @@ public class AsteroidPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
 
         // Add entities to the world
-        asteroid = createAstroid(gameData);
+        asteroid = createAsteroid(gameData);
         world.addEntity(asteroid);
     }
 
-    private Entity createAstroid(GameData gameData) {
+    private Entity createAsteroid(GameData gameData) {
 
-        Entity astroid = new Asteroid();
-        astroid.setPolygonCoordinates(-9,3,-3,9,3,9,9,3,9,-3,3,-9,-3,-9,-9,-3,-9, 3);
-        setStartPoint(gameData, astroid);
+        Entity asteroid = new Asteroid();
+        asteroid.setPolygonCoordinates(-9,3,-3,9,3,9,9,3,9,-3,3,-9,-3,-9,-9,-3,-9, 3);
+        asteroid.setWidth(18);
+        asteroid.setHeight(18);
+        setStartPoint(gameData, asteroid);
 
-        return astroid;
+        return asteroid;
     }
 
     private Entity setStartPoint (GameData gamedata, Entity astroid) {
