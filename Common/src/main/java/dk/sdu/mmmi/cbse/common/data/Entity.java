@@ -71,6 +71,6 @@ public class Entity implements Serializable {
         }
     }
 
-    public void handleCollision(Entity collideEntity) {
+    public void handleCollision(GameData gameData, World world, Entity collideEntity) {
     }
 }

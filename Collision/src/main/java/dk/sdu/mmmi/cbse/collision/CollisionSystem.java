@@ -1,9 +1,9 @@
 package dk.sdu.mmmi.cbse.collision;
 
+import dk.sdu.mmmi.cbse.asteroidsystem.Asteroid;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
-import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 
 import java.util.Collection;
@@ -18,6 +18,9 @@ public class CollisionSystem implements IPostEntityProcessingService {
         for (Entity entity : world.getEntities()) {
             for (Entity collideEntity : world.getEntities()) {
                 if(entity == collideEntity) {
+                    continue;
+                }
+                if(entity.getClass() == Asteroid.class && collideEntity.getClass() == Asteroid.class) {
                     continue;
                 }
 
@@ -37,7 +40,9 @@ public class CollisionSystem implements IPostEntityProcessingService {
 
                 if (distanceX < minDistanceX && distanceY < minDistanceY) {
                     //handle the collision for different entities
-                    entity.handleCollision(collideEntity);
+                    if(entity.getClass() == Asteroid.class) {
+                        entity.handleCollision(gameData, world, collideEntity);
+                    }
                 }
             }
         }

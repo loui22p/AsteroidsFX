@@ -46,7 +46,7 @@ public class Main extends Application {
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
 
-        currentEntityAmount = world.getEntities().size();
+//        currentEntityAmount = world.getEntities().size();
 
         Scene scene = new Scene(gameWindow);
         scene.setOnKeyPressed(event -> {
@@ -113,19 +113,23 @@ public class Main extends Application {
 
     private void update() {
 
-        // Update
+        currentEntityAmount = world.getEntities().size();
+
+        // Update Services
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
             entityProcessorService.process(gameData, world);
         }
 
+        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
+            postEntityProcessorService.process(gameData, world);
+        }
+
         // Check if new Entities have been added but doesn't yet have a polygon.
-        if(currentEntityAmount < world.getEntities().size()) {
-            for (Entity entity : world.getEntities()) {
-                if(polygons.get(entity) == null) {
-                    Polygon polygon = new Polygon(entity.getPolygonCoordinates());
-                    polygons.put(entity, polygon);
-                    gameWindow.getChildren().add(polygon);
-                }
+        for (Entity entity : world.getEntities()) {
+            if(polygons.get(entity) == null) {
+                Polygon polygon = new Polygon(entity.getPolygonCoordinates());
+                polygons.put(entity, polygon);
+                gameWindow.getChildren().add(polygon);
             }
         }
 
@@ -137,11 +141,6 @@ public class Main extends Application {
                 world.removeEntity(entity);                                 //remove entity from world
             }
         }
-
-        for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
-            postEntityProcessorService.process(gameData, world);
-        }
-
     }
 
     private void draw() {
@@ -151,40 +150,16 @@ public class Main extends Application {
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
         }
+
+        //Delete polygons for entities that has been removed
+        for (Entity polygonEntity : polygons.keySet()) {
+            if (!world.getEntities().contains(polygonEntity)) {
+                Polygon removedPolygon = polygons.get(polygonEntity);
+                polygons.remove(polygonEntity);
+                gameWindow.getChildren().remove(removedPolygon);
+            }
+        }
     }
-
-//    private void checkCollision () {
-//        for (Entity entity : world.getEntities()) {
-//            for (Entity collideEntity : world.getEntities()) {
-//                if(entity == collideEntity) {
-//                    continue;
-//                }
-//
-//                // check if collision-boxes overlap
-//                double startEntity = entity.getX() + entity.getWidth() / 2;
-//                double startCollideEntity = collideEntity.getX() + collideEntity.getWidth() / 2;
-//                double endEntity = entity.getY() + entity.getHeight() / 2;
-//                double endCollideEntity = collideEntity.getY() + collideEntity.getHeight() / 2;
-//                Line line = new Line(startEntity, endEntity, startCollideEntity, endCollideEntity);
-//                gameWindow.getChildren().add(line);
-//
-//                // Calculate the distance between the centers of the entities' square hit-boxes
-//                double distanceX = Math.abs((startEntity) - (startCollideEntity));
-//                double distanceY = Math.abs((endEntity) - (endCollideEntity));
-//
-//                // Calculate the minimum distance between the centers at which a collision can occur
-//                double minDistanceX = entity.getWidth() / 2 + collideEntity.getWidth() / 2;
-//                double minDistanceY = entity.getHeight() / 2 + collideEntity.getHeight() / 2;
-//
-//                if (distanceX < minDistanceX && distanceY < minDistanceY) {
-//                    //handle the collision in entities through IPostEntityService
-//
-//                }
-//            }
-//        }
-//    }
-
-
 
     private Collection<? extends IGamePluginService> getPluginServices() {
         return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());

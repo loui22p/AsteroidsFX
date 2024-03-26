@@ -4,6 +4,7 @@ import dk.sdu.mmmi.cbse.asteroidsystem.AsteroidControlSystem;
 import dk.sdu.mmmi.cbse.asteroidsystem.AsteroidPlugin;
 
 module AstroidTest {
+    exports dk.sdu.mmmi.cbse.asteroidsystem;
     requires Common;
     requires CommonBullet;
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;

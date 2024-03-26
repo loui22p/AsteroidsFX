@@ -10,7 +10,6 @@ import java.util.Random;
 public class AsteroidPlugin implements IGamePluginService {
 
     private Entity asteroid;
-
     public AsteroidPlugin() {
     }
 
@@ -22,15 +21,40 @@ public class AsteroidPlugin implements IGamePluginService {
         world.addEntity(asteroid);
     }
 
-    private Entity createAsteroid(GameData gameData) {
+    public Entity createAsteroid(GameData gameData) {
 
         Entity asteroid = new Asteroid();
-        asteroid.setPolygonCoordinates(-9,3,-3,9,3,9,9,3,9,-3,3,-9,-3,-9,-9,-3,-9, 3);
-        asteroid.setWidth(18);
-        asteroid.setHeight(18);
-        setStartPoint(gameData, asteroid);
 
+        int randomizer = (int) (Math.random() * (4-1) + 1);
+//        setNewPolygonCoordinates(asteroid, randomizer);
+        setNewPolygonCoordinates(asteroid, 3);
+
+        setStartPoint(gameData, asteroid);
         return asteroid;
+    }
+
+    public void setNewPolygonCoordinates(Entity asteroid, int newAsteroidSize) {
+
+        switch(newAsteroidSize) {
+            case 1:
+                asteroid.setPolygonCoordinates(-9,3,-3,9,3,9,9,3,9,-3,3,-9,-3,-9,-9,-3,-9, 3);
+                asteroid.setWidth(18);
+                asteroid.setHeight(18);
+                ((Asteroid) asteroid).setAsteroidSize(1);
+                break;
+            case 2:
+                asteroid.setPolygonCoordinates(-18,6,-6,18,6,18,18,6,18,-6,6,-18,-6,-18,-18,-6,-18, 6);
+                asteroid.setWidth(36);
+                asteroid.setHeight(36);
+                ((Asteroid) asteroid).setAsteroidSize(2);
+                break;
+            case 3:
+                asteroid.setPolygonCoordinates(-36,12,-12,36,12,36,36,12,36,-12,12,-36,-12,-36,-36,-12,-36, 12);
+                asteroid.setWidth(72);
+                asteroid.setHeight(72);
+                ((Asteroid) asteroid).setAsteroidSize(3);
+                break;
+        }
     }
 
     private Entity setStartPoint (GameData gamedata, Entity astroid) {
