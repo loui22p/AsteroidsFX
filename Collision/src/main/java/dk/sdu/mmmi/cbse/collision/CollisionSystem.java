@@ -1,26 +1,49 @@
 package dk.sdu.mmmi.cbse.collision;
 
 import dk.sdu.mmmi.cbse.asteroidsystem.Asteroid;
+import dk.sdu.mmmi.cbse.common.bullet.Bullet;
+import dk.sdu.mmmi.cbse.playersystem.Player;
+import dk.sdu.mmmi.cbse.enemysystem.EnemySpaceship;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 
-import java.util.Collection;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
-
 public class CollisionSystem implements IPostEntityProcessingService {
 
+    private Boolean skipCollision = false;
     @Override
     public void process(GameData gameData, World world) {
+
         for (Entity entity : world.getEntities()) {
             for (Entity collideEntity : world.getEntities()) {
+                skipCollision = false;
+
                 if(entity == collideEntity) {
                     continue;
                 }
                 if(entity.getClass() == Asteroid.class && collideEntity.getClass() == Asteroid.class) {
+                    continue;
+                }
+
+                //If either entity or collide entity are Players, it checks whether the colliding bullet is made by that player.
+                if(entity.getClass() == Player.class && collideEntity.getClass() == Bullet.class) {
+                    for(Entity bullet : ((Player)entity).getBullets()) {
+                        if (bullet == collideEntity) {
+                            skipCollision = true;
+                        }
+                    }
+                }
+                //If either entity or collide entity are EnemySpaceships, it checks whether the colliding bullet is made by that enemy spaceship.
+                if(entity.getClass() == EnemySpaceship.class && collideEntity.getClass() == Bullet.class) {
+                    for(Entity bullet : ((EnemySpaceship)entity).getBullets()) {
+                        if (bullet == collideEntity) {
+                            skipCollision = true;
+                        }
+                    }
+                }
+
+                if(skipCollision == true) {
                     continue;
                 }
 
@@ -40,7 +63,7 @@ public class CollisionSystem implements IPostEntityProcessingService {
 
                 if (distanceX < minDistanceX && distanceY < minDistanceY) {
                     //handle the collision for different entities
-                    if(entity.getClass() == Asteroid.class) {
+                    if(entity.getClass() == Asteroid.class || entity.getClass() == Player.class || entity.getClass() == EnemySpaceship.class) {
                         entity.handleCollision(gameData, world, collideEntity);
                     }
                 }

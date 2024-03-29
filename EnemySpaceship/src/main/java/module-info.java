@@ -5,6 +5,7 @@ import dk.sdu.mmmi.cbse.enemysystem.EnemySpaceshipControlSystem;
 import dk.sdu.mmmi.cbse.enemysystem.EnemySpaceshipPlugin;
 
 module EnemySpaceship {
+    exports dk.sdu.mmmi.cbse.enemysystem;
     requires Common;
     requires CommonBullet;   
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;

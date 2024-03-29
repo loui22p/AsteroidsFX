@@ -28,8 +28,24 @@ public class EnemySpaceshipControlSystem implements IEntityProcessingService {
                 for(BulletSPI bullet : getBulletSPIs()) {
                     Entity bulletEntity = bullet.createBullet(enemySpaceship, gameData);
                     bulletEntity.setRotation(0.1 + Math.random()*359.9);
+                    ((EnemySpaceship) enemySpaceship).addBullet((Bullet)bulletEntity);
                     world.addEntity(bulletEntity);
                 }
+            }
+            if (enemySpaceship.getX() < 0) {
+                enemySpaceship.setX(gameData.getDisplayWidth());
+            }
+
+            if (enemySpaceship.getX() > gameData.getDisplayWidth()) {
+                enemySpaceship.setX(0);
+            }
+
+            if (enemySpaceship.getY() < 0) {
+                enemySpaceship.setY(gameData.getDisplayHeight());
+            }
+
+            if (enemySpaceship.getY() > gameData.getDisplayHeight()) {
+                enemySpaceship.setY(0);
             }
         }
     }

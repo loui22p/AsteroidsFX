@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Entity implements Serializable {
