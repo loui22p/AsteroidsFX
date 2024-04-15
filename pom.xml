@@ -19,6 +19,7 @@
         <module>EnemySpaceship</module>
         <module>AsteroidTest</module>
         <module>Collision</module>
+        <module>plugins</module>
     </modules>
     <properties>
         <java>java</java>
