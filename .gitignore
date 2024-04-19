@@ -29,4 +29,7 @@ replay_pid*
 /Player/target/
 /Bullet/target/
 /CommonBullet/target/
+/AsteroidTest/target/
+/EnemySpaceship/target/
+/plugins/target/
 /.idea/

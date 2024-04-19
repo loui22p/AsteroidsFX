@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Entity implements Serializable {
@@ -10,6 +11,8 @@ public class Entity implements Serializable {
     private double[] polygonCoordinates;
     private double x;
     private double y;
+    private double width;
+    private double height;
     private double rotation;
             
 
@@ -44,6 +47,15 @@ public class Entity implements Serializable {
         return y;
     }
 
+    public void setWidth(double width) {
+        this.width = width;
+    }
+    public void setHeight (double height) {
+        this.height = height;
+    }
+    public double getWidth () { return width; }
+    public double getHeight() { return height; }
+
     public void setRotation(double rotation) {
         this.rotation = rotation;
     }
@@ -59,6 +71,7 @@ public class Entity implements Serializable {
             return false;
         }
     }
-        
 
+    public void handleCollision(GameData gameData, World world, Entity collideEntity) {
+    }
 }

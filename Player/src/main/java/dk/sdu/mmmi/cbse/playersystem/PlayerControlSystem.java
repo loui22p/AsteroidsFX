@@ -37,7 +37,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
             if (gameData.getKeys().isDown(GameKeys.SPACE) && ready(System.currentTimeMillis(), (Player) player)) {
                 // Create new Bullet and add it to world - Er dog ikke sikker på hvorfor der allerede er bullet i getBulletSPIs()
                 for(BulletSPI bullet : getBulletSPIs()) {
-                   world.addEntity(bullet.createBullet(player, gameData));
+                    Entity bulletEntity = bullet.createBullet(player, gameData);
+                    ((Player) player).addBullet((Bullet)bulletEntity);
+                    world.addEntity(bulletEntity);
                 }
             }
             
@@ -56,7 +58,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
         if (player.getY() > gameData.getDisplayHeight()) {
             player.setY(gameData.getDisplayHeight()-1);
         }
-                                        
         }
     }
 
