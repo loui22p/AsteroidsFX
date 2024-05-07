@@ -40,4 +40,8 @@ public class EnemySpaceship extends Entity {
     public void addBullet(Bullet bullet) {
         this.bullets.add(bullet);
     }
+
+    public int getTimesHit() {
+        return timesHit;
+    }
 }
