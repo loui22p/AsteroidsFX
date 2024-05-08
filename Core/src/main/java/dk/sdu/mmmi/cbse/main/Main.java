@@ -33,6 +33,7 @@ public class Main extends Application {
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
     private Pane gameWindow;
     private int currentEntityAmount;
+    private Text text;
     
 
     public static void main(String[] args) {
@@ -41,7 +42,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        Text text = new Text(10, 20, "Destroyed asteroids: 0");
+        text = new Text(10, 20, "Destroyed: 0");
         gameWindow = new Pane();
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
@@ -141,6 +142,9 @@ public class Main extends Application {
                 world.removeEntity(entity);                                 //remove entity from world
             }
         }
+
+        //update text showing how many entities are destroyed TODO
+        text.setText(IPostEntityProcessingService.newScore);
     }
 
     private void draw() {

@@ -8,10 +8,12 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+import org.springframework.web.client.RestTemplate;
 
 public class CollisionSystem implements IPostEntityProcessingService {
 
     private Boolean skipCollision = false;
+    public String newScore;
     @Override
     public void process(GameData gameData, World world) {
 
@@ -64,10 +66,26 @@ public class CollisionSystem implements IPostEntityProcessingService {
                 if (distanceX < minDistanceX && distanceY < minDistanceY) {
                     //handle the collision for different entities
                     if(entity.getClass() == Asteroid.class || entity.getClass() == Player.class || entity.getClass() == EnemySpaceship.class) {
+                        //Increment player score-points if it hits anything with one of its bullets
+                        if(collideEntity.getClass() == Bullet.class) {
+                            for(Entity bullet : ((Player)entity).getBullets()) {
+                                if (bullet == collideEntity) {
+                                    newScore = callPlayerScoring();
+                                }
+                            }
+                        }
                         entity.handleCollision(gameData, world, collideEntity);
                     }
                 }
             }
         }
+    }
+
+    public String callPlayerScoring() {
+        final String uri = "http://localhost:8080/score?point=1";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+        return result;
     }
 }
