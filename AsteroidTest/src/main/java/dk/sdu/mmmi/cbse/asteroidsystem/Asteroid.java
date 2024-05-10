@@ -5,6 +5,12 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class Asteroid extends Entity {
 
@@ -16,6 +22,7 @@ public class Asteroid extends Entity {
     public void handleCollision(GameData gameData, World world, Entity collidingEntity) {
 
         if(getAsteroidSize() == 1) {
+            callPlayerScoring();
             world.removeEntity(collidingEntity);
             world.removeEntity(this);
         } else if (getAsteroidSize() == 2) {
@@ -52,6 +59,20 @@ public class Asteroid extends Entity {
 
             world.removeEntity(collidingEntity);
             world.removeEntity(this);
+        }
+    }
+
+    private void callPlayerScoring() {
+        final String uri = "http://localhost:8080/newScore?point=1";
+
+        try {
+            URL url = new URL(uri);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.getResponseCode();
+            connection.disconnect();
+        } catch (IOException e) {
+            e.getMessage();
         }
     }
 

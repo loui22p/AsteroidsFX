@@ -7,6 +7,12 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -143,8 +149,8 @@ public class Main extends Application {
             }
         }
 
-        //update text showing how many entities are destroyed TODO
-        text.setText(IPostEntityProcessingService.newScore);
+        //update text showing how many entities are destroyed
+        updateScore();
     }
 
     private void draw() {
@@ -162,6 +168,22 @@ public class Main extends Application {
                 polygons.remove(polygonEntity);
                 gameWindow.getChildren().remove(removedPolygon);
             }
+        }
+    }
+
+    private void updateScore() {
+        final String uri = "http://localhost:8080/getScore";
+
+        try {
+            URL url = new URL(uri);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            text.setText("Destroyed: " + reader.readLine());
+            connection.disconnect();
+        } catch (IOException e) {
+            text.setText("Score Not Found");
         }
     }
 

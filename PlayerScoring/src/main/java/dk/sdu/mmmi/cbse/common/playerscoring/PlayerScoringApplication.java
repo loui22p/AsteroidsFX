@@ -10,15 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PlayerScoringApplication {
 
-    private int totalScore = 0;
+    private int totalScore;
 
     public static void main(String[] args) {
         SpringApplication.run(PlayerScoringApplication.class, args);
     }
 
-    @GetMapping("/score")
+    @GetMapping("/newScore")
     public int calculateNewScore(@RequestParam(value = "point") int point) {
         totalScore += point;
+        System.out.println(totalScore);
         return totalScore ;
+    }
+
+    @GetMapping("/getScore")
+    public int getScore() {
+        return totalScore;
     }
 }

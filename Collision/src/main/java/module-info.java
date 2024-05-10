@@ -6,7 +6,6 @@ module Collision {
     requires AstroidTest;
     requires Player;
     requires EnemySpaceship;
-    requires spring.web;
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
     provides IPostEntityProcessingService with dk.sdu.mmmi.cbse.collision.CollisionSystem;
 }
