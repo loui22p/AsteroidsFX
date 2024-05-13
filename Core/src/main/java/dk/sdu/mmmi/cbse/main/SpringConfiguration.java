@@ -14,8 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringConfiguration {
 
-    @Bean
     public SpringConfiguration() {
+    }
+
+    @Bean
+    public Game game() {
+        return new Game(gamePluginServices(), entityProcessingServiceList(), postEntityProcessingServices());
     }
 
     @Bean
