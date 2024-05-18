@@ -26,8 +26,7 @@ public class AsteroidPlugin implements IGamePluginService {
         Entity asteroid = new Asteroid();
 
         int randomizer = (int) (Math.random() * (4-1) + 1);
-//        setNewPolygonCoordinates(asteroid, randomizer);
-        setNewPolygonCoordinates(asteroid, 3);
+        setNewPolygonCoordinates(asteroid, randomizer);
 
         setStartPoint(gameData, asteroid);
         return asteroid;
@@ -63,21 +62,21 @@ public class AsteroidPlugin implements IGamePluginService {
         switch(randomizer) {
             case 1:
                 astroid.setX(Math.random() * gamedata.getDisplayWidth());
-                astroid.setY(0);                                             //set enemy at top
+                astroid.setY(0);                                             //set asteroid at top
                 astroid.setRotation(Math.random() * (180) + 0.1); //set rotation between 0 and 180
                 break;
             case 2:
                 astroid.setX(Math.random() * gamedata.getDisplayWidth());
-                astroid.setY(gamedata.getDisplayHeight());                   //set enemy at bottom
+                astroid.setY(gamedata.getDisplayHeight());                   //set asteroid at bottom
                 astroid.setRotation(Math.random() * (-180) - 0.1);    //set rotation between 0 and -180
                 break;
             case 3:
-                astroid.setX(0);                                             //set enemy to the left
+                astroid.setX(0);                                             //set asteroid to the left
                 astroid.setY(Math.random() * gamedata.getDisplayHeight());
                 astroid.setRotation(random.nextDouble(90 + 90) - 90);  //set rotation between -90 and 90
                 break;
             case 4:
-                astroid.setX(gamedata.getDisplayWidth());                    //set enemy to the right
+                astroid.setX(gamedata.getDisplayWidth());                    //set asteroid to the right
                 astroid.setY(Math.random() * gamedata.getDisplayHeight());
                 astroid.setRotation(random.nextDouble(90 + 90) + 90);    //set rotation between 90 and -90
                 break;

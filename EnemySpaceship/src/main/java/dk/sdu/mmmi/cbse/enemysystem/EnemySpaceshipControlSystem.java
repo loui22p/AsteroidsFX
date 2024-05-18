@@ -13,7 +13,8 @@ import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
 
 
-public class EnemySpaceshipControlSystem implements IEntityProcessingService {
+public class
+EnemySpaceshipControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
